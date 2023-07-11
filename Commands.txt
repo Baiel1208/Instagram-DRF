@@ -1,0 +1,27 @@
+"""
+# Виртуальное окружени
+pip install virtualenv - Установить virtualenv
+python -m venv venv - Запустить окружение 
+venv\Scripts\activate - Активация win
+source venv/bin/activate 
+
+git checkout -b  name(hw1) - Создать ветку
+git checkout  name(master) - Переход на другую ветку
+git merge name(hw1) - мерджить
+python manage.py test - Тестить views
+
+
+# Django
+pip install django - Установить Django
+
+python manage.py createsuperuser - создаёт пользователя
+
+python3 manage.py makemigrations и python3 manage.py migrate. Создать базу данных, соответствующую вашим моделям 
+
+django-admin startproject core . -  Создать новый проект(ОДИН РАЗ) 
+
+python manage.py startapp appname(blog) -  Создать новое приложение
+
+python manage.py runserver - Запускает сервер
+
+"""
