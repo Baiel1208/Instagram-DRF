@@ -66,7 +66,7 @@ class PostComment(models.Model):
     )
     post = models.ForeignKey(
         Post, on_delete=models.Model,
-        related_name='post_comment',
+        related_name='post_comments',
         verbose_name='Пост'
     )
     text = models.CharField(
