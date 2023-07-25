@@ -9,6 +9,12 @@ class PostSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class PostCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ('id', 'title', 'description', 'image', 'created')
+
+
 class PostLikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostLike
