@@ -2,8 +2,8 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
-from apps.posts.models import Post, PostComment, PostLike 
-from apps.posts.serializers import PostSerializer, PostLikeSerializer, PostCommentSerializer, PostDetailSerializer, PostCreateSerializer
+from apps.posts.models import Post, PostComment, PostLike, PostFavorite 
+from apps.posts.serializers import PostSerializer, PostLikeSerializer, PostCommentSerializer, PostDetailSerializer, PostCreateSerializer, PostFavoriteSerializer
 from apps.posts.permissions import PostPermission
 
 # Create your views here.
@@ -51,3 +51,17 @@ class PostCommentAPIView(mixins.CreateModelMixin,
                         GenericViewSet):
     queryset = PostComment.objects.all()
     serializer_class = PostCommentSerializer
+
+
+
+# PostFavorite
+class PostFavoriteAPIView(mixins.CreateModelMixin,
+                          mixins.DestroyModelMixin,
+                          GenericViewSet):
+    queryset = PostFavorite.objects.all()
+    serializer_class = PostFavoriteSerializer
+    permission_classes = (PostPermission, )
+
+
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)
