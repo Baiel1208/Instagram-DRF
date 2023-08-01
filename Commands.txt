@@ -20,7 +20,7 @@ python3 manage.py makemigrations и python3 manage.py migrate. Создать б
 
 django-admin startproject core . -  Создать новый проект(ОДИН РАЗ) 
 
-python manage.py startapp appname(blog) -  Создать новое приложение
+python3 manage.py startapp appname(blog) -  Создать новое приложение
 
 python manage.py runserver - Запускает сервер
 

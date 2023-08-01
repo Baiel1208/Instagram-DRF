@@ -1,10 +1,16 @@
 from rest_framework.viewsets import GenericViewSet
-from rest_framework import mixins
+from rest_framework import mixins, status
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
+# from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+
 
 from apps.users.models import User 
-from apps.users.serializers import UserSerializer, UserRegisterSerializer,UserDetailSerializer
+from apps.users.serializers import UserSerializer, UserRegisterSerializer,\
+    UserDetailSerializer
+from apps.users.permissions import UserPermission
 
 # Create your views here.
 class UserAPIView(mixins.ListModelMixin,
@@ -28,4 +34,18 @@ class UserAPIView(mixins.ListModelMixin,
         return UserSerializer
 
 
+    def get_permissions(self):
+        if self.action in ('update', 'partial_update', 'destroy'):
+            return (UserPermission(), )
+        return (AllowAny(), )
 
+
+
+    def destroy(self, request, *args, **kwargs):
+        super().destroy(request, *args, **kwargs)
+        return Response({'delete' : 'Пользователь успешно удален'}, status=status.HTTP_200_OK)
+
+
+    # def create(self, request, *args, **kwargs):
+    #     super().create(request, *args, **kwargs)
+    #     return Response({'create' : 'Пользователь успешно удален'}, status=status.HTTP_201_CREATED)

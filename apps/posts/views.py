@@ -1,9 +1,13 @@
 from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import AllowAny
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
+# from rest_framework.permissions import IsAdminUser
 
 from apps.posts.models import Post, PostComment, PostLike, PostFavorite 
-from apps.posts.serializers import PostSerializer, PostLikeSerializer, PostCommentSerializer, PostDetailSerializer, PostCreateSerializer, PostFavoriteSerializer
+from apps.posts.serializers import PostSerializer, PostLikeSerializer,\
+      PostCommentSerializer, PostDetailSerializer, PostCreateSerializer, PostFavoriteSerializer
 from apps.posts.permissions import PostPermission
 
 # Create your views here.
@@ -16,6 +20,9 @@ class PostAPIView(mixins.ListModelMixin,
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     # permission_classes = (IsAuthenticated, )
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ['title', 'description', 'user']
+    search_fields = ['title', 'description', 'user__username']
 
 
     def get_permissions(self):
@@ -43,6 +50,10 @@ class PostLikeAPIView(mixins.CreateModelMixin,
                       GenericViewSet):
     queryset = PostLike.objects.all()
     serializer_class = PostLikeSerializer
+    permission_classes = (PostPermission, )
+
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)
 
 # PostComment
 class PostCommentAPIView(mixins.CreateModelMixin,
@@ -51,6 +62,10 @@ class PostCommentAPIView(mixins.CreateModelMixin,
                         GenericViewSet):
     queryset = PostComment.objects.all()
     serializer_class = PostCommentSerializer
+    permission_classes = (PostPermission, )
+
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)
 
 
 
