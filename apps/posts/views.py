@@ -4,11 +4,13 @@ from rest_framework.permissions import AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 # from rest_framework.permissions import IsAdminUser
+import asyncio
 
 from apps.posts.models import Post, PostComment, PostLike, PostFavorite 
 from apps.posts.serializers import PostSerializer, PostLikeSerializer,\
       PostCommentSerializer, PostDetailSerializer, PostCreateSerializer, PostFavoriteSerializer
 from apps.posts.permissions import PostPermission
+from apps.telegram.views import send_post_message
 
 # Create your views here.
 class PostAPIView(mixins.ListModelMixin,
@@ -40,7 +42,13 @@ class PostAPIView(mixins.ListModelMixin,
 
 
     def perform_create(self, serializer):
-        return serializer.save(user=self.request.user)
+        post = serializer.save(user=self.request.user)
+        asyncio.run(send_post_message(
+            post.user,
+            post.title,
+            post.description
+        ))
+        return post
 
 
 

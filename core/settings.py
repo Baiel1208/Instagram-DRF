@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     #apps
     'apps.posts',
     'apps.users',
+    'apps.telegram',
 
     # admin
     'jazzmin',
@@ -58,6 +59,9 @@ INSTALLED_APPS = [
     'drf_yasg',
 
 ]
+
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
